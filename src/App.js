@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import Navbar from './Components/Header'
+import Header from './Components/Header'
 import Footer from './Components/Footer'
 import Loader from './Components/Loader'
 
 import Home from "./Pages/Home.tsx"
 
-
 const AppendHeaderFooter = ({ Comp }) => {
     return (
         <>
-            <Navbar />
+            <Header />
             <Comp />
             <Footer />
         </>
@@ -31,6 +32,8 @@ function App() {
 
     return (
         <div className="bg-primaryBg flex flex-col text-primaryblack font-primary pt-[20px] min-h-screen">
+
+            <ToastContainer />
 
             {
                 loading
