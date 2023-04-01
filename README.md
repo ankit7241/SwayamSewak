@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+<div align="center">
+  <img src="/public/logo192.png" alt="CryptQuiz logo" height="250">
+  <br />
+  <em>SwayamSewak -  blockchain-based self-help group platform</em><br/>
+  <h4><a href="https://SwayamSewak.netlify.app/" target="_blank">« Check Demo »</a></h4>
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About The Project
+<div align="center">
+  <img src="/public/OG_Image.png" alt="CryptQuiz logo" width="900">
+</div>
 
-## Available Scripts
+&nbsp;
 
-In the project directory, you can run:
+SwayamSewak is a blockchain-based self-help group platform that aims to empower individuals to come together and support each other towards achieving their financial goals. The platform enables anyone to form a self-help group (SHG) and invite others to join or create their own SHG in a secure environment.
 
-### `npm start`
+Members of the SHG can also request a small loan without collateral, and all members will vote on whether to lend to them. Loans are made from the SHG's balance, and borrowers must repay the loan within a specified period with a small interest rate. After the loan repayment deadline, all the borrower repays the loan and become trustworthy for future.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+With SwayamSewak, individuals can access financial support from a community of trusted peers in a secure, transparent, and decentralized way. The platform aims to foster a sense of collaboration and mutual support among its members, creating a more inclusive and empowering financial ecosystem.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+>  **This project is our submission for Web3 INIT hackathon organized by UNSNARL on devfolio in April 2023**
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+Follow the below steps to get the project working.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Install the dependencies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```sh
+   # Using NPM
+   npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   # Using Yarn
+   yarn
+   ```
 
-### `npm run eject`
+2. Run using:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```sh
+   # Using NPM
+   npm start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   # Using Yarn
+   yarn start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## ⚡ Features List
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Anyone can create a SHG with specific use-case
+2. Others can select an SHG to become a member
+3. SHG members can deposit tokens monthly on their dashboard
+4. Any member can ask for small loans without collateral
+5. All the members will vote and decide whether to lend or not
+6. Easy process for loan repayment
 
-## Learn More
+## 🗃 Tech Stack
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<div align="center">
+  <table>
+    <thead>
+      <td><strong>Technology</strong></td>
+      <td><strong>Purpose</strong></td>
+    </thead>
+    <tbody>
+      <tr>
+        <td>React JS</td>
+        <td>Frontend</td>
+      </tr>
+      <tr>
+        <td>Context API</td>
+        <td>State Management</td>
+      </tr>
+      <tr>
+        <td>Tailwind CSS</td>
+        <td>UI Components</td>
+      </tr>
+      <tr>
+        <td>Beacon</td>
+        <td>User Authentication</td>
+      </tr>
+      <tr>
+        <td>SmartPy</td>
+        <td>Smart contract</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
