@@ -6,8 +6,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './Components/Header'
 import Footer from './Components/Footer'
 import Loader from './Components/Loader'
+import ScrollToTop from './Components/ScrollToTop'
 
 import Home from "./Pages/Home.tsx"
+import Explore from "./Pages/Explore"
+import Dashboard from './Pages/Dashboard';
+import Error404 from './Pages/Error404'
 
 const AppendHeaderFooter = ({ Comp }) => {
     return (
@@ -28,6 +32,18 @@ function App() {
             path: "/",
             element: <AppendHeaderFooter Comp={Home} />,
         },
+        {
+            path: "/explore",
+            element: <AppendHeaderFooter Comp={Explore} />,
+        },
+        {
+            path: "/dashboard",
+            element: <AppendHeaderFooter Comp={Dashboard} />,
+        },
+        {
+            path: "*",
+            element: <Error404 />,
+        },
     ]);
 
     return (
@@ -38,11 +54,13 @@ function App() {
             {
                 loading
                     ? <div className="w-full height-full flex-1 grid place-content-center">
-                        <Loader />
-                        <p className='text-white/50 text-xl mt-3'>Loading...</p>
+                        <Loader varient="full" theme='light' />
+                        <p className='text-primaryBlack/50 text-xl font-medium mt-3'>Loading...</p>
                     </div>
                     : <RouterProvider router={router} />
             }
+
+            <ScrollToTop />
         </div>
     )
 }

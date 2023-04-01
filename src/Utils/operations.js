@@ -1,4 +1,3 @@
-// Call buy_ticket entrypoint in the contract
 import { tezos } from "./tezos";
 
 export const buyTicketOperation = async (amountToSend) => {
@@ -14,7 +13,6 @@ export const buyTicketOperation = async (amountToSend) => {
     }
 };
 
-// Call end_game entrypoint in the contract
 export const endGameOperation = async () => {
     try {
         const contractInstance = await tezos.wallet.at("KT1W41KjtRrZghs4JzWiwKtGTmPG2G1z8byD");

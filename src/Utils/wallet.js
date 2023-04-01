@@ -1,4 +1,3 @@
-// Setup beacon wallet instance
 import { BeaconWallet } from "@taquito/beacon-wallet";
 
 export const wallet = new BeaconWallet({
@@ -15,7 +14,6 @@ export const disconnectWallet = async () => {
     wallet.disconnect()
     await wallet.clearActiveAccount();
 };
-
 
 export const getAccount = async () => {
     const activeAccount = await wallet.client.getActiveAccount();

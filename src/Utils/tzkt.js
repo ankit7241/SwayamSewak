@@ -1,5 +1,3 @@
-// Fetch contract storage
-
 import axios from "axios";
 
 export const fetchStorage = async () => {

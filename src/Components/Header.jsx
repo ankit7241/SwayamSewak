@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { connectWallet, disconnectWallet, getAccount } from "../Utils/wallet";
+import { AuthContext } from "../Utils/AuthProvider";
 
 import Button from "./Button";
 import Logo from "../Assets/LogoWhiteFilled.svg"
 
 const Header = () => {
 
-    const [account, setAccount] = useState(null);
+    const { address, connectWallet, disconnectWallet } = useContext(AuthContext);
+
     const [minifiedAddress, setMinifiedAddress] = useState("...");
-
-    useEffect(() => {
-        (async () => {
-            // Get the active account
-            const account = await getAccount();
-            setAccount(account);
-        })();
-    }, []);
-
 
     const onConnectWallet = async () => {
         await connectWallet();
-        const account = await getAccount();
-        setAccount(account);
-        navigator.clipboard.writeText(account)
-        toast.success(`${account.slice(0, 5) + '...' + account.slice(-5)} connected successfully. Address copied to clipboard`, {
+        navigator.clipboard.writeText(address)
+        toast.success(`${address.slice(0, 5) + '...' + address.slice(-5)} connected successfully. Address copied to clipboard`, {
             position: "top-center",
-            autoClose: 30000,
+            autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -40,11 +30,11 @@ const Header = () => {
 
     const onDisconnectWallet = async () => {
         await disconnectWallet();
-        setAccount(null)
+
         setMinifiedAddress("...")
         toast.success(`Wallet disconnected!`, {
             position: "top-center",
-            autoClose: 30000,
+            autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -55,14 +45,14 @@ const Header = () => {
     };
 
     useEffect(() => {
-        if (account) {
-            setMinifiedAddress(account.slice(0, 5) + '...' + account.slice(-5))
+        if (address) {
+            setMinifiedAddress(address.slice(0, 5) + '...' + address.slice(-5))
         }
-    }, [account])
+    }, [address])
 
     return (
 
-        <div className="bg-[#232323] flex flex-row justify-between items-center py-10 px-30 border-primaryWidth border-white/10 rounded-50 sticky top-[20px] z-50 mx-[20px] mb-[30px] box-border">
+        <div className="bg-[#232323] flex flex-col gap-[15px] md:gap-0 md:flex-row justify-between items-center py-10 px-30 border-primaryWidth border-white/10 rounded-50 md:sticky top-[20px] z-50 mx-[20px] mb-[30px] box-border">
             <NavLink to="/" replace={true}>
                 <div className="flex flex-row items-center justify-center gap-[15px]">
                     <img src={Logo} className="h-[40px] w-[40px] rounded-full" alt="Logo" />
@@ -81,11 +71,13 @@ const Header = () => {
                 </NavLink>
             </ul>
             <Button
+                varient="light"
                 gradient={true}
                 weight={"bold"}
-                onClick={account ? onDisconnectWallet : onConnectWallet}
+                style={"md:w-auto w-full"}
+                onClick={address ? onDisconnectWallet : onConnectWallet}
             >
-                {account ? minifiedAddress : "Connect Wallet"}
+                {address ? minifiedAddress : "Connect Wallet"}
             </Button>
         </div>
     )

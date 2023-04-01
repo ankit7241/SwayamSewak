@@ -13,7 +13,7 @@ const Content = () => {
                 How it works
             </h2>
 
-            <div className='flex flex-col justify-center items-center px-[50px] xl:px-[100px] gap-[100px]'>
+            <div className='flex flex-col justify-center items-center px:20 md:px-50 xl:px-[100px] gap-[100px]'>
 
                 <Step
                     number="1"
@@ -57,28 +57,62 @@ export default Content
 
 const Step = ({ number, heading, description, image, alt, right }) => {
     return (
-        <div className='flex items-center justify-between'>
+        <div className='flex flex-col md:flex-row items-center justify-between md:gap-0 gap-10'>
             {
                 right
                     ? <>
-                        <img src={image} alt={alt} />
-                        <div className='flex flex-col justify-center items-start px-20 gap-[15px] w-1/2 box-border'>
-                            <div className='flex items-center gap-[30px]'>
+                        <img
+                            data-aos="fade-right"
+                            data-aos-anchor-placement="bottom-bottom"
+                            data-aos-duration={1000}
+                            data-aos-once={true}
+                            src={image}
+                            alt={alt}
+                            className="hidden md:block"
+                        />
+                        <div className='flex flex-col justify-center items-start px-20 gap-[15px] w-full md:w-1/2 box-border'>
+                            <div className='flex items-center gap-[15px] md:gap-[30px] w-full'>
                                 <p className='bg-blackToTrans w-[40px] h-[40px] flex justify-center items-center border-primaryWidth border-[#6a6a6a] rounded-full text-[20px] leading-[30px]'>{number}</p>
-                                <h1 className='font-semibold text-[35px] leading-[52px]'>{heading}</h1>
+                                <h1 className='font-semibold text-[22px] leading-[35px] md:text-[35px] md:leading-[52px]'>{heading}</h1>
                             </div>
-                            <p className='font-medium text-[20px] leading-[30px] text-primaryBlack/60'>{description}</p>
+                            <p
+                                data-aos="fade-up"
+                                data-aos-anchor-placement="bottom-bottom"
+                                data-aos-duration={1000}
+                                data-aos-delay={300}
+                                data-aos-once={true}
+                                className='font-medium text-[17px] leading-[26px] md:text-[20px] md:leading-[30px] text-primaryBlack/60'
+                            >
+                                {description}
+                            </p>
                         </div>
                     </>
                     : <>
-                        <div className='flex flex-col justify-center items-start px-20 gap-[15px] w-1/2 box-border'>
-                            <div className='flex items-center gap-[30px]'>
+                        <div className='flex flex-col justify-center items-start px-20 gap-[15px] w-full md:w-1/2 box-border'>
+                            <div className='flex items-center gap-[15px] md:gap-[30px] w-full'>
                                 <p className='bg-blackToTrans w-[40px] h-[40px] flex justify-center items-center border-primaryWidth border-[#6a6a6a] rounded-full text-[20px] leading-[30px]'>{number}</p>
-                                <h1 className='font-semibold text-[35px] leading-[52px]'>{heading}</h1>
+                                <h1 className='font-semibold text-[22px] leading-[35px] md:text-[35px] md:leading-[52px]'>{heading}</h1>
                             </div>
-                            <p className='font-medium text-[20px] leading-[30px] text-primaryBlack/60'>{description}</p>
+                            <p
+                                data-aos="fade-up"
+                                data-aos-anchor-placement="bottom-bottom"
+                                data-aos-duration={1000}
+                                data-aos-delay={300}
+                                data-aos-once={true}
+                                className='font-medium text-[17px] leading-[26px] md:text-[20px] md:leading-[30px] text-primaryBlack/60'
+                            >
+                                {description}
+                            </p>
                         </div>
-                        <img src={image} alt={alt} />
+                        <img
+                            data-aos="fade-left"
+                            data-aos-anchor-placement="bottom-bottom"
+                            data-aos-duration={1000}
+                            data-aos-once={true}
+                            src={image}
+                            alt={alt}
+                            className="hidden md:block"
+                        />
                     </>
             }
         </div>

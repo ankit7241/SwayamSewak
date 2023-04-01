@@ -6,7 +6,7 @@ const AddSHGModal = () => {
     function handleAddress() {
         return
     }
-    const [Detail, setDetail] = useState("0x3456464ez65756")
+    const [Detail, setDetail] = useState("tz1a1hUQ4U1o3hQQ7vFra9f7WA5U2FJqH8wM")
 
     return (
         <div className='flex flex-col bg-[#1A1A1A] w-[70%] items-center rounded-3xl border-solid border-2 border-[rgba(100,100,100,0.7)]'>

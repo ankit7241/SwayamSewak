@@ -12,7 +12,7 @@ const Team = () => {
             <h2 className="font-mammoth text-primaryBlack font-medium text-3xl text-center">
                 Our Team
             </h2>
-            <div className="flex justify-between w-full max-w-[1000px] z-[inherit]">
+            <div className="flex flex-col md:flex-row items-center justify-center md:justify-between w-full max-w-[1000px] z-[inherit]">
                 <ProfileCard src={Ankit} name="Ankit Choudhary" roles="Smart contract Developer" github="ankit7241" twitter="ankit7241" />
                 <ProfileCard src={Atharv} name="Atharv Varshney" roles="Front-End Developer" github="atharv777" twitter="Atharvvarshney7" />
                 <ProfileCard src={Mridul} name="Mridul Gupta" roles="Front-End Developer" github="MridulGupta007" twitter="" />
@@ -28,7 +28,7 @@ const ProfileCard = ({ name, roles, src, github, twitter }) => {
     return (
         <div
             style={{ "--IMG-URL": `url('${Grid}')` } as React.CSSProperties}
-            className="cursor-default flex flex-col items-center justify-between py-7 w-[300px] h-[300px] bg-primaryBlack border-[1.5px] border-white/1 rounded-2xl z-[inherit]"
+            className="cursor-default flex flex-col items-center justify-between py-7 w-[300px] h-[300px] bg-primaryBlack border-[1.5px] border-white/1 rounded-2xl z-[inherit] my-5 md:m-0"
         >
             <div className=" h-24 w-24 border-4 border-white/20 rounded-full relative team_card">
                 <img className=" z-[3] w-full h-full rounded-full" src={src} alt="PFP" />

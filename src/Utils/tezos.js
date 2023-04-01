@@ -1,6 +1,12 @@
-// Setup Tezos toolkit
+import { useContext } from "react";
+
 import { TezosToolkit } from "@taquito/taquito";
-import { wallet } from "./wallet";
+
+import { AuthContext } from "./AuthProvider";
+
+
+const { wallet } = useContext(AuthContext);
+
 
 export const tezos = new TezosToolkit("https://ghostnet.tezos.marigold.dev");
 
