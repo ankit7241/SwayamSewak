@@ -53,7 +53,7 @@ function App() {
 
             {
                 loading
-                    ? <div className="w-full height-full flex-1 grid place-content-center">
+                    ? <div className="w-full h-full flex-1 grid place-content-center">
                         <Loader varient="full" theme='light' />
                         <p className='text-primaryBlack/50 text-xl font-medium mt-3'>Loading...</p>
                     </div>

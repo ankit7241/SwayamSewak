@@ -3,20 +3,22 @@ import { BeaconWallet } from "@taquito/beacon-wallet";
 
 const AuthContext = createContext();
 
+const wallet = new BeaconWallet({
+    name: "SwayamSewak",
+    preferredNetwork: "ghostnet",
+});
+
 
 export default function AuthHolder(props) {
 
     const [address, setAddress] = useState(null);
+    const [connected, setConnected] = useState(false);
 
-    const wallet = new BeaconWallet({
-        name: "SwayamSewak",
-        preferredNetwork: "ghostnet",
-    });
 
     const getAccount = async () => {
         const activeAccount = await wallet.client.getActiveAccount();
         if (activeAccount) {
-            return activeAccount.address;
+            return activeAccount;
         } else {
             return "";
         }
@@ -26,22 +28,25 @@ export default function AuthHolder(props) {
         await wallet.requestPermissions({ network: { type: "ghostnet" } });
 
         const account = await getAccount();
-        setAddress(account);
+
+        setAddress(account.address);
+        setConnected(true);
     };
     const disconnectWallet = async () => {
-        wallet.disconnect()
         await wallet.clearActiveAccount();
-
+        wallet.disconnect()
         setAddress(null)
+        setConnected(false)
     };
 
     return (
         <AuthContext.Provider value={{
-            wallet, address, setAddress, connectWallet, disconnectWallet, getAccount
+            address, setAddress, connectWallet, disconnectWallet, getAccount, connected, setConnected
         }}>
             {props.children}
         </AuthContext.Provider>
     )
 }
 
-export { AuthContext }
+export { wallet };
+export { AuthContext };

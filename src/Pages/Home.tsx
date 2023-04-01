@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import GradientCirlceLeft from "../Assets/GradientCirlceLeft.svg";
 import GradientCirlceRight from "../Assets/GradientCirlceRight.svg";
@@ -8,6 +8,12 @@ import Content from '../Components/Home/Content';
 import Team from '../Components/Home/Team.tsx';
 
 export default function Home() {
+
+    useEffect(() => {
+        document.body.style.overflowY = "scroll";
+    }, [])
+    
+
     return (
         <div 
         style={{"--IMG-URL-left": `url('${GradientCirlceLeft}')`, "--IMG-URL-right": `url('${GradientCirlceRight}')`} as React.CSSProperties} 

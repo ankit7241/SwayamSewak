@@ -9,14 +9,15 @@ import Logo from "../Assets/LogoWhiteFilled.svg"
 
 const Header = () => {
 
-    const { address, connectWallet, disconnectWallet } = useContext(AuthContext);
+    const { address, connected, connectWallet, disconnectWallet } = useContext(AuthContext);
 
     const [minifiedAddress, setMinifiedAddress] = useState("...");
 
+
     const onConnectWallet = async () => {
         await connectWallet();
-        navigator.clipboard.writeText(address)
-        toast.success(`${address.slice(0, 5) + '...' + address.slice(-5)} connected successfully. Address copied to clipboard`, {
+        address && navigator.clipboard.writeText(address)
+        address && toast.success(`${address.slice(0, 5) + '...' + address.slice(-5)} connected successfully. Address copied to clipboard`, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -77,7 +78,7 @@ const Header = () => {
                 style={"md:w-auto w-full"}
                 onClick={address ? onDisconnectWallet : onConnectWallet}
             >
-                {address ? minifiedAddress : "Connect Wallet"}
+                {connected ? minifiedAddress : "Connect Wallet"}
             </Button>
         </div>
     )

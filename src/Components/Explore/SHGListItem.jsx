@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function SHGListItem() {
+export default function SHGListItem({ ShgName, ShgDesc, members, established, slug }) {
 
-    const [ShgName, setShgName] = useState("Rajasthan Mahila SHG");
-    const [ShgDesc, setShgDesc] = useState("This SHG is dedicated to women of well-off household. It enables them to save money and invest in cryptocurrencies & Stock market. Profits are equally divided among the SHG members.");
-    const [members, setMembers] = useState("30");
-    const [established, setEstablished] = useState("1679907247704");
     const [formattedDate, setFormattedDate] = useState("--");
-    const [slug, setSlug] = useState("857");
 
     useEffect(() => {
         const DateObj = new Date(parseInt(established));

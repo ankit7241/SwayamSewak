@@ -3,11 +3,11 @@ import { toast } from "react-toastify";
 
 import Button from "../Components/Button";
 import Loader from "../Components/Loader";
-import { AuthContext } from "../Utils/AuthProvider";;
+import { AuthContext } from "../Utils/AuthProvider";
 
 export default function Dashboard() {
 
-    const { address, connectWallet } = useContext(AuthContext);
+    const { address, connected, connectWallet } = useContext(AuthContext);
 
     // const [address, setAddress] = useState("...");
     const [loading, setLoading] = useState(false);
@@ -18,6 +18,10 @@ export default function Dashboard() {
     const [members, setMembers] = useState(
         ["0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee", "0x4d4D....15e5Ee"]
     );
+
+    useEffect(() => {
+        document.body.style.overflowY = "scroll";
+    }, [])
 
 
     const onConnectWallet = async () => {
@@ -72,7 +76,7 @@ export default function Dashboard() {
 
     return (
 
-        address
+        connected
             ? <div className='flex flex-col justify-center items-center gap-[20px] w-full h-full flex-1 px-10 lg:px-20 z-[inherit]'>
 
                 <h2 className="font-mammoth text-primaryBlack font-medium text-3xl text-center">

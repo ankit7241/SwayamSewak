@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CgArrowLongLeft } from 'react-icons/cg';
 
@@ -6,6 +6,10 @@ import Err404 from "../Assets/Err404.svg";
 import Button from '../Components/Button';
 
 export default function Error404() {
+
+    useEffect(() => {
+        document.body.style.overflowY = "scroll";
+    }, [])
 
     return (
         <div className="w-screen h-calc(100vh-20px) max-h-[calc(100vh-20px)] flex flex-col justify-center items-center">

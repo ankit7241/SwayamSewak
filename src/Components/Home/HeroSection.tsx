@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Button from '../Button';
 import Arrow from "../../Assets/Arrow.svg";
@@ -66,8 +67,12 @@ const HeroSection = () => {
 
                     <div className='md:flex flex-col lg:flex-row items-center justify-center p-0 gap-[20px] hidden'>
 
-                        <Button varient="light" gradient={true} weight="bold">Create your own SHG</Button>
-                        <Button varient="light" gradient={false} weight="semibold">Dashboard</Button>
+                        <Link to="/explore?add-shg=true" replace={true} className="z-20">
+                            <Button varient="light" gradient={true} weight="bold">Create your own SHG</Button>
+                            </Link>
+                        <Link to="/dashboard" replace={true} className="z-20">
+                            <Button varient="light" gradient={false} weight="semibold">Dashboard</Button>
+                        </Link>
 
                     </div>
 
