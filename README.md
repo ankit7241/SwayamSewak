@@ -2,10 +2,10 @@
   <img src="/public/logo192.png" alt="CryptQuiz logo" height="250">
   <br />
   <em>SwayamSewak -  blockchain-based self-help group platform</em><br/>
-  <h4><a href="https://SwayamSewak.netlify.app/" target="_blank">« Check Demo »</a></h4>
+  <h4><a href="https://swayam-sewak.vercel.app/" target="_blank">« Check Demo »</a></h4>
 </div>
 
-## About The Project
+## ℹ️ About The Project
 <div align="center">
   <img src="/public/OG_Image.png" alt="CryptQuiz logo" width="900">
 </div>
@@ -21,7 +21,7 @@ With SwayamSewak, individuals can access financial support from a community of t
 >  **This project is our submission for Web3 INIT hackathon organized by UNSNARL on devfolio in April 2023**
 
 
-## Getting Started
+## 🚀 Getting Started
 
 Follow the below steps to get the project working.
 
@@ -32,7 +32,7 @@ Follow the below steps to get the project working.
    npm install
 
    # Using Yarn
-   yarn
+   yarn install
    ```
 
 2. Run using:
