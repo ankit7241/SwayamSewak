@@ -221,7 +221,7 @@ export default function Dashboard() {
                                                 Your funds:
                                             </p>
                                             <p className="text-medium text-sm text-center text-white/70">
-                                                {yourFunds / 1000000} TEZ
+                                                {yourFunds / 1000000} ꜩ
                                             </p>
                                         </div>
 
@@ -230,7 +230,7 @@ export default function Dashboard() {
                                                 SHG Balance:
                                             </p>
                                             <p className="text-medium text-sm text-center text-white/70">
-                                                {shgBalance / 1000000} TEZ
+                                                {shgBalance / 1000000} ꜩ
                                             </p>
                                         </div>
 
@@ -278,7 +278,7 @@ export default function Dashboard() {
                                                                 <span className="text-white mr-2">{item.minifiedAddress}</span>
                                                                 <span>created a proposal for</span>
                                                                 <span className="text-white mx-2">{item.amount / 1000000}</span>
-                                                                <span>TEZ on</span>
+                                                                <span>ꜩ on</span>
                                                                 <span className="text-white ml-2">{FormatFullDateString(item.timestamp)}</span>
                                                             </p>
                                                         )
@@ -344,7 +344,7 @@ export default function Dashboard() {
                                 setOpenProposalModal={setOpenProposalModal}
                             />
                         }
-                        {openRequestModal &&
+                        {openProposalModal &&
                             <ProposalModal
                                 openProposalModal={openProposalModal}
                                 setOpenDepositModal={setOpenDepositModal}

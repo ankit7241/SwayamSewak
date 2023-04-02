@@ -30,8 +30,8 @@ export default function Explore() {
     // On toggle of Modal, change the scroll mode of body
     useEffect(() => {
         if (openAddSHG || openJoinSHG) {
-            document.body.style.overflowY = "hidden";
             window.scroll(0, 0)
+            document.body.style.overflowY = "hidden";
         } else {
             document.body.style.overflowY = "scroll";
         }

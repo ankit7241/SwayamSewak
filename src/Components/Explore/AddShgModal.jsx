@@ -59,7 +59,7 @@ export default function AddShgModal({ setOpenAddSHG }) {
                     />
 
                     <div className="flex flex-row items-center justify-center gap-[20px] w-full">
-                        {connected ? (
+                        {address ? (
                             <>
                                 <p className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/70 text-center cursor-default">
                                     {"Your address - "}{" "}
