@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { BeaconWallet } from "@taquito/beacon-wallet";
 
 const AuthContext = createContext();
@@ -38,6 +38,15 @@ export default function AuthHolder(props) {
         setAddress(null)
         setConnected(false)
     };
+
+    useEffect(() => {
+        (async () => {
+            // Get the active account
+            const account = await getAccount();
+            setAddress(account.address);
+            setConnected(true);
+        })();
+    }, []);
 
     return (
         <AuthContext.Provider value={{
