@@ -26,7 +26,7 @@ export default function AddShgModal({ setOpenAddSHG }) {
 	const addShg = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT1HtEcV5fANAeeFSShHyNHUJM2d9utJzFDW"
+				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
 			);
 			const op = await contractInstance.methods
 				.add_shg(shgDescription, shgName)

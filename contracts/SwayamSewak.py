@@ -3,8 +3,6 @@ import smartpy as sp
 class SelfHelp(sp.Contract):
     def __init__(self):
         self.init(
-            
-
 
             # memberOfShg = sp.map(l ={},tkey = sp.TAddress, tvalue = sp.TSet(t=sp.TNat)),
             memberOfShg = sp.map(l ={},tkey = sp.TAddress, tvalue = sp.TNat),
@@ -14,7 +12,7 @@ class SelfHelp(sp.Contract):
             
             shgId = sp.nat(0),
 
-            #Mapping from shgId to Proposal Id
+            #Mapping from shgId to Proposal Id. Currently only one can be mapped rn
             proposalIdInShg = sp.map(l ={},tkey = sp.TNat, tvalue = sp.TSet(t=sp.TNat)),
 
             #Mapping from id to proposal
@@ -49,7 +47,7 @@ class SelfHelp(sp.Contract):
         sp.else:
             self.data.shgDetails[_shgId].funderDetails[sp.sender] = sp.amount
             self.data.shgDetails[_shgId].numberOfFunders+=1
-            self.data.shgDetails[_shgId].funders
+            self.data.shgDetails[_shgId].funders.add(sp.sender)
 
 
     

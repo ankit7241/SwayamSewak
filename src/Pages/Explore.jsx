@@ -55,7 +55,7 @@ export default function Explore() {
 		const data = [
 			{
 				name: storage.shgDetails["1"].shgName,
-				description: storage.shgDetails["1"].shgDetailCID,
+				description: storage.shgDetails["1"].shgDescription,
 				// members: ["1", "2", "3"],
 				members: storage.shgDetails["1"].funders["1"],
 				established: storage.shgDetails["1"].timeOfCreation,

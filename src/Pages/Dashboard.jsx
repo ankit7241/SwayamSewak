@@ -18,6 +18,7 @@ export default function Dashboard() {
 	);
 	const [shgEst, setShgEst] = useState(1680201352064);
 	const [activity, setActivity] = useState([]);
+	const [numberOfMembers, setNumberOfMembers] = useState(0);
 	const [members, setMembers] = useState([
 		"0x4d4D....15e5Ee",
 		"0x4d4D....15e5Ee",
@@ -36,10 +37,19 @@ export default function Dashboard() {
 	]);
 
 	useEffect(() => {
+		updateData();
 		document.body.style.overflowY = "scroll";
 	}, []);
 
-	const updateData = async () => {};
+	const updateData = async () => {
+		const storage = await fetchStorage();
+		const shgId = storage.memberOfShg[`${address}`];
+		setShgName(storage.shgDetails[shgId].shgName);
+		setShgDesc(storage.shgDetails[shgId].shgDescription);
+		setShgEst(storage.shgDetails[shgId].timeOfCreation);
+		setNumberOfMembers(storage.shgDetails[shgId].numberOfFunders);
+		setMembers(storage.shgDetails[shgId].funders);
+	};
 
 	const onConnectWallet = async () => {
 		await connectWallet();
@@ -91,7 +101,7 @@ export default function Dashboard() {
 		const shgId = 1;
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT1RMK4ZhTq1VGEsAAtgHXadknSo4TWv9nvk"
+				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
 			);
 			const op = await contractInstance.methods.add_funds(shgId).send({
 				amount: `${amountToSend}`,
@@ -113,7 +123,7 @@ export default function Dashboard() {
 
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT1RMK4ZhTq1VGEsAAtgHXadknSo4TWv9nvk"
+				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
 			);
 			const op = await contractInstance.methods
 				.proposal(amountToAsk, proposalDetailCID, proposalName, shgId)
@@ -124,8 +134,6 @@ export default function Dashboard() {
 			throw err;
 		}
 	};
-
-	const OpenLeaveSHG = () => {};
 
 	return connected ? (
 		<div className="flex flex-col justify-center items-center gap-[20px] w-full h-full flex-1 px-10 lg:px-20 z-[inherit]">
@@ -141,7 +149,6 @@ export default function Dashboard() {
 				</span>
 				) <span className="font-primary"> &#128075;</span>
 			</h2>
-
 			<div className="flex flex-col px-10 lg:px-30 w-full z-[inherit] flex-1">
 				<div
 					data-aos="fade-up"
@@ -177,12 +184,6 @@ export default function Dashboard() {
 								>
 									Request for loan
 								</button>
-								<button
-									onClick={OpenLeaveSHG}
-									className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-red-600/20 border-red-600/50 hover:bg-red-600/30 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-red-600 w-full"
-								>
-									Leave SHG
-								</button>
 							</div>
 
 							<div>
@@ -190,7 +191,7 @@ export default function Dashboard() {
 									Number of Members:
 								</p>
 								<p className="text-medium text-sm text-center text-white/70">
-									{members.length} People
+									{numberOfMembers} People
 								</p>
 							</div>
 
