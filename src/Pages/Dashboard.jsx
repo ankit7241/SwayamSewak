@@ -118,7 +118,7 @@ export default function Dashboard() {
 		//Add a modal here asking for value they want to invest and change the value of amount accordingly
 		const shgId = 1;
 		const proposalName = "Farming";
-		const proposalDetailCID = "I'd";
+		const proposalDescription = "I'd";
 		const amountToAsk = 100;
 
 		try {
@@ -126,7 +126,7 @@ export default function Dashboard() {
 				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
 			);
 			const op = await contractInstance.methods
-				.proposal(amountToAsk, proposalDetailCID, proposalName, shgId)
+				.proposal(amountToAsk, proposalDescription, proposalName, shgId)
 				.send();
 			await op.confirmation(1);
 			console.log("Proposal Created");
