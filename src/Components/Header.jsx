@@ -9,7 +9,7 @@ import Logo from "../Assets/LogoWhiteFilled.svg";
 
 const Header = () => {
 
-    const { address, connected, connectWallet, disconnectWallet } =
+    const { address, connectWallet, disconnectWallet } =
         useContext(AuthContext);
 
     const [minifiedAddress, setMinifiedAddress] = useState("...");
@@ -92,7 +92,7 @@ const Header = () => {
                 style={"md:w-auto w-full"}
                 onClick={address ? onDisconnectWallet : onConnectWallet}
             >
-                {connected ? minifiedAddress : "Connect Wallet"}
+                {address ? minifiedAddress : "Connect Wallet"}
             </Button>
         </div>
     );

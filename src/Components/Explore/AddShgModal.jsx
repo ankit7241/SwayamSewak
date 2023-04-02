@@ -6,109 +6,100 @@ import { AuthContext } from "../../Utils/AuthProvider";
 import Button from "../Button";
 
 export default function AddShgModal({ setOpenAddSHG }) {
-	const { address, connectWallet, disconnectWallet, connected } =
-		useContext(AuthContext);
+    const { address, connectWallet, disconnectWallet, connected } = useContext(AuthContext);
 
-	const navigate = useNavigate();
-	const [shgName, setShgName] = useState("");
-	const [shgDescription, setShgDescription] = useState("");
+    const navigate = useNavigate();
+    const [shgName, setShgName] = useState("");
+    const [shgDescription, setShgDescription] = useState("");
 
-	const shgNameChangeHandler = (event) => {
-		setShgName(event.target.value);
-		console.log(shgName);
-	};
+    const addShg = async () => {
+        try {
+            const contractInstance = await tezos.wallet.at(
+                "KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
+            );
+            const op = await contractInstance.methods
+                .add_shg(shgDescription, shgName)
+                .send();
+            await op.confirmation(1);
+        } catch (err) {
+            throw err;
+        }
+    };
 
-	const shgDetailChangeHandler = (event) => {
-		setShgDescription(event.target.value);
-		console.log(shgDescription);
-	};
+    return (
+        <div
+            onClick={() => {
+                navigate("/explore");
+                setOpenAddSHG(false);
+            }}
+            className="absolute top-0 left-0 z-[100] w-screen h-screen flex justify-center items-center bg-primaryBlack/90 sm: md:px-20"
+        >
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className="flex flex-col items-center px-20 py-[100px] gap-[50px] bg-primaryBlack border-[3px] border-white/50 rounded-30 lg:w-3/4"
+            >
+                <h2 className="font-mammoth text-3xl tracking-wider text-white">
+                    Create your own SHG
+                </h2>
 
-	const addShg = async () => {
-		try {
-			const contractInstance = await tezos.wallet.at(
-				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
-			);
-			const op = await contractInstance.methods
-				.add_shg(shgDescription, shgName)
-				.send();
-			await op.confirmation(1);
-		} catch (err) {
-			throw err;
-		}
-	};
+                <div className="flex flex-col items-center p-0 gap-[20px] w-full lg:w-3/4">
+                    <input
+                        className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/70 placeholder:text-white/50"
+                        type="text"
+                        placeholder="Enter SHG name"
+                        value={shgName}
+                        onChange={(e) => setShgName(e.target.value)}
+                    />
+                    <input
+                        className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/70 placeholder:text-white/50"
+                        type="text"
+                        placeholder="Enter SHG use case"
+                        value={shgDescription}
+                        onChange={(e) => setShgDescription(e.target.value)}
+                    />
 
-	return (
-		<div
-			onClick={() => {
-				navigate("/explore");
-				setOpenAddSHG(false);
-			}}
-			className="absolute top-0 left-0 z-[100] w-screen h-screen flex justify-center items-center bg-primaryBlack/90 sm: md:px-20"
-		>
-			<div
-				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col items-center px-20 py-[100px] gap-[50px] bg-primaryBlack border-[3px] border-white/50 rounded-30 lg:w-3/4"
-			>
-				<h2 className="font-mammoth text-3xl tracking-wider text-white">
-					Create your own SHG
-				</h2>
-
-				<div className="flex flex-col items-center p-0 gap-[20px] w-full lg:w-3/4">
-					<input
-						className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/70 placeholder:text-white/50"
-						type="text"
-						placeholder="Enter SHG name"
-						onChange={shgNameChangeHandler}
-					/>
-					<input
-						className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/70 placeholder:text-white/50"
-						type="text"
-						placeholder="Enter SHG use case"
-						onChange={shgDetailChangeHandler}
-					/>
-
-					<div className="flex flex-row items-center justify-center gap-[20px] w-full">
-						{connected ? (
-							<>
-								<p className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/70 text-center cursor-default">
-									{"Your address - "}{" "}
-									<span className="text-white">
-										({address.slice(0, 5) + "..." + address.slice(-5)})
-									</span>
-								</p>
-								<Button
-									varient="light"
-									gradient={false}
-									weight={"medium"}
-									style="w-full"
-									onClick={async () => await disconnectWallet()}
-								>
-									Click to change your address
-								</Button>
-							</>
-						) : (
-							<Button
-								varient="light"
-								gradient={true}
-								weight={"bold"}
-								style="w-full"
-								onClick={async () => await connectWallet()}
-							>
-								Connect Wallet
-							</Button>
-						)}
-						<Button
-							varient="light"
-							gradient={true}
-							weight={"bold"}
-							style="w-full"
-							onClick={addShg}
-						>
-							Submit
-						</Button>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+                    <div className="flex flex-row items-center justify-center gap-[20px] w-full">
+                        {connected ? (
+                            <>
+                                <p className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/70 text-center cursor-default">
+                                    {"Your address - "}{" "}
+                                    <span className="text-white">
+                                        ({address.slice(0, 5) + "..." + address.slice(-5)})
+                                    </span>
+                                </p>
+                                <Button
+                                    varient="light"
+                                    gradient={false}
+                                    weight={"medium"}
+                                    style="w-full"
+                                    onClick={async () => await disconnectWallet()}
+                                >
+                                    Click to change your address
+                                </Button>
+                            </>
+                        ) : (
+                            <Button
+                                varient="light"
+                                gradient={true}
+                                weight={"bold"}
+                                style="w-full"
+                                onClick={async () => await connectWallet()}
+                            >
+                                Connect Wallet
+                            </Button>
+                        )}
+                        <Button
+                            varient="light"
+                            gradient={true}
+                            weight={"bold"}
+                            style="w-full"
+                            onClick={addShg}
+                        >
+                            Submit
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }

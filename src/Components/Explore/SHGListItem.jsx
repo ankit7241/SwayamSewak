@@ -16,7 +16,7 @@ export default function SHGListItem({ ShgName, ShgDesc, members, established, sl
     }, [established]);
 
     return (
-        <Link to={`/join/${slug}`} replace={true}>
+        <Link to={`/explore?join-shg=${slug}`} replace={true}>
             <div
                 title="Click to join"
                 className="flex flex-col md:flex-row items-center py-10 px-30 bg-primaryBlack rounded-20 gap-[20px] cursor-pointer hover:scale-[1.02] transition"
