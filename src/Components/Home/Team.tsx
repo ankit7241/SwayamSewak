@@ -13,7 +13,7 @@ const Team = () => {
                 Our Team
             </h2>
             <div className="flex flex-col md:flex-row items-center justify-center md:justify-between w-full max-w-[1000px] z-[inherit]">
-                <ProfileCard src={Ankit} name="Ankit Choudhary" roles="Smart contract Developer" github="ankit7241" twitter="ankit7241" />
+                <ProfileCard src={Ankit} name="Ankit Choudhary" roles="Blockchain Developer" github="ankit7241" twitter="ankit7241" />
                 <ProfileCard src={Atharv} name="Atharv Varshney" roles="Front-End Developer" github="atharv777" twitter="Atharvvarshney7" />
                 <ProfileCard src={Mridul} name="Mridul Gupta" roles="Front-End Developer" github="MridulGupta007" twitter="" />
             </div>

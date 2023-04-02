@@ -1,8 +1,12 @@
 import axios from "axios";
 
 export const fetchStorage = async () => {
-    const res = await axios.get(
-        "https://ghostnet.tzkt.io/KT1W41KjtRrZghs4JzWiwKtGTmPG2G1z8byD/storage/"
-    );
-    return res.data;
+	try {
+		const res = await axios.get(
+			"https://api.ghostnet.tzkt.io/v1/contracts/KT1HtEcV5fANAeeFSShHyNHUJM2d9utJzFDW/storage"
+		);
+		return res.data;
+	} catch (err) {
+		throw err;
+	}
 };
