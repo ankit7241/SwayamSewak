@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { fetchStorage } from "../Utils/tzkt";
 
 import SHGListItem from "../Components/Explore/SHGListItem";
 import AddShgModal from "../Components/Explore/AddShgModal";
+import JoinShgModal from "../Components/Explore/JoinShgModal";
+
 import Loader from "../Components/Loader";
 import Button from "../Components/Button";
-import { fetchStorage } from "../Utils/tzkt";
 
 import AOS from "aos";
 AOS.init();
@@ -16,21 +18,24 @@ export default function Explore() {
 
     const [loading, setLoading] = useState(true);
     const [openAddSHG, setOpenAddSHG] = useState(false);
+    const [openJoinSHG, setOpenJoinSHG] = useState(null);
     const [allShgDetails, setAllShgDetails] = useState(null);
 
     // Checking and setting if Add SHG is in URL Params
     useEffect(() => {
-        setOpenAddSHG(search.replace("?", "").split("&").includes("add-shg=true"));
+        setOpenAddSHG(search.includes("add-shg=true"));
+        setOpenJoinSHG(search.includes("join-shg=") ? search.split("join-shg=")[1] : null);
     }, [search]);
 
     // On toggle of Modal, change the scroll mode of body
     useEffect(() => {
-        if (openAddSHG) {
+        if (openAddSHG || openJoinSHG) {
+            window.scroll(0, 0)
             document.body.style.overflowY = "hidden";
         } else {
             document.body.style.overflowY = "scroll";
         }
-    }, [openAddSHG]);
+    }, [openAddSHG, openJoinSHG]);
 
     // Fetch the SHG details from Tezos
     const FetchTheData = async () => {
@@ -48,8 +53,6 @@ export default function Explore() {
                 established: Date.parse(storage.shgDetails[i].timeOfCreation),
                 shgId: i,
             };
-
-            console.log(fetchedObject);
 
             Data.push(fetchedObject)
         }
@@ -123,6 +126,7 @@ export default function Explore() {
             </div>
 
             {openAddSHG && <AddShgModal setOpenAddSHG={setOpenAddSHG} />}
+            {openJoinSHG && <JoinShgModal shgId={openJoinSHG} setOpenJoinSHG={setOpenJoinSHG} shgDetails={allShgDetails} />}
         </div>
     );
 }

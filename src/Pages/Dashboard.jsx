@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../Components/Button";
 import Loader from "../Components/Loader";
+import RequestFundsModal from "../Components/Dashboard/RequestFundsModal";
+import DepositFundsModal from "../Components/Dashboard/DepositFundsModal";
+import ProposalModal from "../Components/Dashboard/ProposalModal";
 
 import { AuthContext } from "../Utils/AuthProvider";
 import { fetchStorage } from "../Utils/tzkt";
-import { tezos } from "../Utils/tezos";
 import { CgArrowLongRight } from "react-icons/cg";
 
 export default function Dashboard() {
@@ -18,19 +20,34 @@ export default function Dashboard() {
 	const [loading, setLoading] = useState(false);
 	const [isAMember, setIsAMember] = useState(false);
 	const [activityLoading, setActivityLoading] = useState(false);
-	const [shgName, setShgName] = useState("Rajasthan Mahila SHG");
-	const [shgDesc, setShgDesc] = useState(
-		"This SHG is dedicated to women of well-off household. It enables them to save money and invest in cryptocurrencies & Stock market. Profits are equally divided among the SHG members."
-	);
-	const [shgEst, setShgEst] = useState(1680201352064);
+	const [openDepositModal, setOpenDepositModal] = useState(false);
+	const [openRequestModal, setOpenRequestModal] = useState(false);
+	const [openProposalModal, setOpenProposalModal] = useState(null);
+
+	const [shgId, setShgId] = useState(null);
+	const [shgName, setShgName] = useState("---");
+	const [shgDesc, setShgDesc] = useState("---");
+	const [shgEst, setShgEst] = useState("---");
 	const [activity, setActivity] = useState([]);
 	const [numberOfMembers, setNumberOfMembers] = useState(0);
 	const [members, setMembers] = useState([]);
+	const [shgBalance, setShgBalance] = useState(0);
+	const [yourFunds, setYourFunds] = useState(0);
 
 	useEffect(() => {
 		updateData();
-		document.body.style.overflowY = "scroll";
-	}, []);
+		fetchActivity();
+	}, [address, connected]);
+
+	// On toggle of Modal, change the scroll mode of body
+	useEffect(() => {
+		if (openRequestModal || openDepositModal || openProposalModal) {
+			window.scroll(0, 0);
+			document.body.style.overflowY = "hidden";
+		} else {
+			document.body.style.overflowY = "scroll";
+		}
+	}, [openRequestModal, openDepositModal, openProposalModal]);
 
 	const updateData = async () => {
 		setLoading(true);
@@ -40,11 +57,14 @@ export default function Dashboard() {
 
 		// User is a member of a SHG
 		if (shgId) {
+			setShgId(shgId);
 			setShgName(storage.shgDetails[shgId].shgName);
 			setShgDesc(storage.shgDetails[shgId].shgDescription);
 			setShgEst(storage.shgDetails[shgId].timeOfCreation);
 			setNumberOfMembers(storage.shgDetails[shgId].numberOfFunders);
 			setMembers(storage.shgDetails[shgId].funders);
+			setShgBalance(storage.shgDetails[shgId].balance);
+			setYourFunds(storage.shgDetails[shgId].funderDetails[`${address}`]);
 			setIsAMember(true);
 		}
 		// User is not a member of any SHG
@@ -53,6 +73,43 @@ export default function Dashboard() {
 		}
 
 		setLoading(false);
+	};
+
+	const fetchActivity = async () => {
+		setActivityLoading(true);
+
+		const storage = await fetchStorage();
+		const shgId = storage.memberOfShg[`${address}`];
+
+		const ProposalIds = storage.proposalIdInShg[shgId];
+
+		if (ProposalIds) {
+			const AllProposals = [];
+
+			ProposalIds.forEach((item) => {
+				const proposalData = {};
+
+				proposalData.id = item;
+				proposalData.name = storage.proposalDetails[item].proposalName;
+				proposalData.desc = storage.proposalDetails[item].proposalDescription;
+				proposalData.amount = storage.proposalDetails[item].amount;
+				proposalData.proposerAddress = storage.proposalDetails[item].proposer;
+				proposalData.minifiedAddress =
+					storage.proposalDetails[item].proposer.slice(0, 4) +
+					"..." +
+					address.slice(-4);
+				proposalData.timestamp = storage.proposalDetails[item].timeOfProposal;
+				proposalData.votesAgainst = storage.proposalDetails[item].votesAgainst;
+				proposalData.votesInFavour =
+					storage.proposalDetails[item].votesInFavour;
+
+				AllProposals.push(proposalData);
+			});
+
+			setActivity(AllProposals);
+		}
+
+		setActivityLoading(false);
 	};
 
 	const onConnectWallet = async () => {
@@ -98,48 +155,15 @@ export default function Dashboard() {
 		return Day + " " + Month + " " + Year;
 	};
 
-	const OpenDepositFunds = async () => {
-		//Add a modal here asking for value they want to invest and change the value of amount accordingly
-		const amountToSend = 10000;
-
-		const shgId = 1;
-		try {
-			const contractInstance = await tezos.wallet.at(
-				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
-			);
-			const op = await contractInstance.methods.add_funds(shgId).send({
-				amount: `${amountToSend}`,
-				mutez: true,
-			});
-			await op.confirmation(1);
-			console.log("Fund Deposited");
-		} catch (err) {
-			throw err;
-		}
+	const handleOpenProposalModal = (id) => {
+		setOpenProposalModal(id);
 	};
 
-	const OpenRequestFunds = async () => {
-		//Add a modal here asking for value they want to invest and change the value of amount accordingly
-		const shgId = 1;
-		const proposalName = "Farming";
-		const proposalDetailCID = "I'd";
-		const amountToAsk = 100;
-
-		try {
-			const contractInstance = await tezos.wallet.at(
-				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
-			);
-			const op = await contractInstance.methods
-				.proposal(amountToAsk, proposalDetailCID, proposalName, shgId)
-				.send();
-			await op.confirmation(1);
-			console.log("Proposal Created");
-		} catch (err) {
-			throw err;
-		}
-	};
-
-	return connected ? (
+	return loading ? (
+		<div className="flex flex-col justify-center items-center gap-[20px] w-full h-full flex-1 px-10 lg:px-20 z-[inherit]">
+			<Loader varient="line" theme="light" text={true} />
+		</div>
+	) : connected ? (
 		isAMember ? (
 			<div className="flex flex-col justify-center items-center gap-[20px] w-full h-full flex-1 px-10 lg:px-20 z-[inherit]">
 				<h2 className="font-mammoth text-primaryBlack font-medium text-3xl text-center">
@@ -178,17 +202,35 @@ export default function Dashboard() {
 
 								<div className="flex flex-col items-center p-0 gap-[10px] h-1/2">
 									<button
-										onClick={OpenDepositFunds}
+										onClick={() => setOpenDepositModal(true)}
 										className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-white/70 hover:text-white w-full"
 									>
 										Deposit funds
 									</button>
 									<button
-										onClick={OpenRequestFunds}
+										onClick={() => setOpenRequestModal(true)}
 										className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-white/70 hover:text-white w-full"
 									>
 										Request for loan
 									</button>
+								</div>
+
+								<div>
+									<p className="text-medium text-sm text-center text-white/30">
+										Your funds:
+									</p>
+									<p className="text-medium text-sm text-center text-white/70">
+										{yourFunds / 1000000} ꜩ
+									</p>
+								</div>
+
+								<div>
+									<p className="text-medium text-sm text-center text-white/30">
+										SHG Balance:
+									</p>
+									<p className="text-medium text-sm text-center text-white/70">
+										{shgBalance / 1000000} ꜩ
+									</p>
 								</div>
 
 								<div>
@@ -216,7 +258,7 @@ export default function Dashboard() {
 								</h4>
 
 								<div
-									className={`flex flex-col items-center p-0 gap-[10px] h-full max-h-[380px] overflow-x-hidden overflow-y-auto ${
+									className={`flex flex-col items-center p-0 gap-[10px] w-full h-full max-h-[365px] overflow-x-hidden overflow-y-auto pr-2 ${
 										activityLoading
 											? "justify-center"
 											: (!activity || !activity.length) && "justify-center"
@@ -225,18 +267,32 @@ export default function Dashboard() {
 									{activityLoading ? (
 										<Loader varient="line" theme="dark" text={true} />
 									) : activity && activity.length ? (
-										activity.map((item) => {
-											return (
-												<>
-													<p className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full">
-														{item}
+										<>
+											{activity.map((item) => {
+												return (
+													<p
+														onClick={() => handleOpenProposalModal(item.id)}
+														title="Click to view proposal"
+														className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full"
+													>
+														<span className="text-white mr-2">
+															{item.minifiedAddress}
+														</span>
+														<span>created a proposal for</span>
+														<span className="text-white mx-2">
+															{item.amount / 1000000}
+														</span>
+														<span>ꜩ on</span>
+														<span className="text-white ml-2">
+															{FormatFullDateString(item.timestamp)}
+														</span>
 													</p>
-													<p className="mt-7 text-center text-sm text-white/30 w-full">
-														No more activity found
-													</p>
-												</>
-											);
-										})
+												);
+											})}
+											<p className="mt-7 text-center text-sm text-white/30 w-full">
+												No more activity found
+											</p>
+										</>
 									) : (
 										<p className="text-center text-sm text-white/30 w-full">
 											No activity found
@@ -249,10 +305,26 @@ export default function Dashboard() {
 								<h4 className="font-medium text-xl text-white/80">Members:</h4>
 
 								<div className="flex flex-col items-stretch p-0 pr-2 gap-[10px] max-h-[380px] overflow-y-auto">
-									{members.map((item) => {
+									{members.map((item, index) => {
 										return (
-											<p className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full">
-												{item}
+											<p
+												key={index}
+												title="You"
+												className={`
+                                                    cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] transition text-[15px] leading-5 w-full 
+                                                    ${
+																											item === address
+																												? "bg-white/10 border-white/20 hover:bg-white/20 text-white/60 hover:text-white/90"
+																												: "bg-white/5 border-white/10 hover:bg-white/10 text-white/50 hover:text-white/80"
+																										}`}
+											>
+												{item === address
+													? "You (" +
+													  item.slice(0, 4) +
+													  " ... " +
+													  item.slice(-4) +
+													  ")"
+													: item.slice(0, 6) + " ... " + item.slice(-6)}
 											</p>
 										);
 									})}
@@ -261,6 +333,31 @@ export default function Dashboard() {
 						</div>
 					</div>
 				</div>
+
+				{openDepositModal && (
+					<DepositFundsModal
+						shgId={shgId}
+						setOpenDepositModal={setOpenDepositModal}
+						setOpenRequestModal={setOpenRequestModal}
+						setOpenProposalModal={setOpenProposalModal}
+					/>
+				)}
+				{openRequestModal && (
+					<RequestFundsModal
+						shgId={shgId}
+						setOpenDepositModal={setOpenDepositModal}
+						setOpenRequestModal={setOpenRequestModal}
+						setOpenProposalModal={setOpenProposalModal}
+					/>
+				)}
+				{openProposalModal && (
+					<ProposalModal
+						openProposalModal={openProposalModal}
+						setOpenDepositModal={setOpenDepositModal}
+						setOpenRequestModal={setOpenRequestModal}
+						setOpenProposalModal={setOpenProposalModal}
+					/>
+				)}
 			</div>
 		) : (
 			<div className="border-box w-screen min-h-[calc(100vh-250px)] max-h-[calc(100vh-250px)] gap-5 lg:gap-10 flex flex-col justify-center items-center">

@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 import { TezosToolkit } from "@taquito/taquito";
 
 import { wallet } from "./AuthProvider";
