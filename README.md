@@ -2,10 +2,10 @@
   <img src="/public/logo192.png" alt="CryptQuiz logo" height="250">
   <br />
   <em>SwayamSewak -  blockchain-based self-help group platform</em><br/>
-  <h4><a href="https://SwayamSewak.netlify.app/" target="_blank">« Check Demo »</a></h4>
+  <h4><a href="https://swayam-sewak.vercel.app/" target="_blank">« Check Demo »</a></h4>
 </div>
 
-## About The Project
+## ℹ️ About The Project
 <div align="center">
   <img src="/public/OG_Image.png" alt="CryptQuiz logo" width="900">
 </div>
@@ -16,12 +16,12 @@ SwayamSewak is a blockchain-based self-help group platform that aims to empower 
 
 Members of the SHG can also request a small loan without collateral, and all members will vote on whether to lend to them. Loans are made from the SHG's balance, and borrowers must repay the loan within a specified period with a small interest rate. After the loan repayment deadline, all the borrower repays the loan and become trustworthy for future.
 
-With SwayamSewak, individuals can access financial support from a community of trusted peers in a secure, transparent, and decentralized way. The platform aims to foster a sense of collaboration and mutual support among its members, creating a more inclusive and empowering financial ecosystem.
+With SwayamSewak, individuals can access financial support from a community of trusted peers in a secure, transparent, and decentralized way. The platform aims to foster a sense of collaboration and mutual support among its members, creating a more inclusive and empowering financial ecosystem. 
 
 >  **This project is our submission for Web3 INIT hackathon organized by UNSNARL on devfolio in April 2023**
 
 
-## Getting Started
+## 🚀 Getting Started
 
 Follow the below steps to get the project working.
 
@@ -32,7 +32,7 @@ Follow the below steps to get the project working.
    npm install
 
    # Using Yarn
-   yarn
+   yarn install
    ```
 
 2. Run using:
@@ -63,6 +63,10 @@ Follow the below steps to get the project working.
       <td><strong>Purpose</strong></td>
     </thead>
     <tbody>
+       <tr>
+        <td>Tezos</td>
+        <td>Blockchain</td>
+      </tr>
       <tr>
         <td>React JS</td>
         <td>Frontend</td>
