@@ -8,10 +8,9 @@ import Button from "./Button";
 import Logo from "../Assets/LogoWhiteFilled.svg";
 
 const Header = () => {
-	const { address, connected, connectWallet, disconnectWallet } =
-		useContext(AuthContext);
-
 	const { address, connectWallet, disconnectWallet } = useContext(AuthContext);
+
+	const [minifiedAddress, setMinifiedAddress] = useState("...");
 
 	const onConnectWallet = async () => {
 		await connectWallet();
@@ -49,12 +48,6 @@ const Header = () => {
 			theme: "dark",
 		});
 	};
-
-	useEffect(() => {
-		if (address) {
-			setMinifiedAddress(address.slice(0, 5) + "..." + address.slice(-5));
-		}
-	}, [address]);
 
 	useEffect(() => {
 		if (address) {
