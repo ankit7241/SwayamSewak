@@ -41,6 +41,10 @@ function App() {
             element: <AppendHeaderFooter Comp={Dashboard} />,
         },
         {
+            path: "/join/:shgId",
+            element: <AppendHeaderFooter Comp={Dashboard} />,
+        },
+        {
             path: "*",
             element: <Error404 />,
         },

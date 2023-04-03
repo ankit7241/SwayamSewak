@@ -1,17 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../Components/Button";
 import Loader from "../Components/Loader";
+
 import { AuthContext } from "../Utils/AuthProvider";
 import { fetchStorage } from "../Utils/tzkt";
 import { tezos } from "../Utils/tezos";
+import { CgArrowLongRight } from "react-icons/cg";
 
 export default function Dashboard() {
+	const navigate = useNavigate();
+
 	const { address, connected, connectWallet } = useContext(AuthContext);
 
-	// const [address, setAddress] = useState("...");
 	const [loading, setLoading] = useState(false);
+	const [isAMember, setIsAMember] = useState(false);
+	const [activityLoading, setActivityLoading] = useState(false);
 	const [shgName, setShgName] = useState("Rajasthan Mahila SHG");
 	const [shgDesc, setShgDesc] = useState(
 		"This SHG is dedicated to women of well-off household. It enables them to save money and invest in cryptocurrencies & Stock market. Profits are equally divided among the SHG members."
@@ -19,22 +25,7 @@ export default function Dashboard() {
 	const [shgEst, setShgEst] = useState(1680201352064);
 	const [activity, setActivity] = useState([]);
 	const [numberOfMembers, setNumberOfMembers] = useState(0);
-	const [members, setMembers] = useState([
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-		"0x4d4D....15e5Ee",
-	]);
+	const [members, setMembers] = useState([]);
 
 	useEffect(() => {
 		updateData();
@@ -42,13 +33,26 @@ export default function Dashboard() {
 	}, []);
 
 	const updateData = async () => {
+		setLoading(true);
+
 		const storage = await fetchStorage();
 		const shgId = storage.memberOfShg[`${address}`];
-		setShgName(storage.shgDetails[shgId].shgName);
-		setShgDesc(storage.shgDetails[shgId].shgDescription);
-		setShgEst(storage.shgDetails[shgId].timeOfCreation);
-		setNumberOfMembers(storage.shgDetails[shgId].numberOfFunders);
-		setMembers(storage.shgDetails[shgId].funders);
+
+		// User is a member of a SHG
+		if (shgId) {
+			setShgName(storage.shgDetails[shgId].shgName);
+			setShgDesc(storage.shgDetails[shgId].shgDescription);
+			setShgEst(storage.shgDetails[shgId].timeOfCreation);
+			setNumberOfMembers(storage.shgDetails[shgId].numberOfFunders);
+			setMembers(storage.shgDetails[shgId].funders);
+			setIsAMember(true);
+		}
+		// User is not a member of any SHG
+		else {
+			setIsAMember(false);
+		}
+
+		setLoading(false);
 	};
 
 	const onConnectWallet = async () => {
@@ -118,7 +122,7 @@ export default function Dashboard() {
 		//Add a modal here asking for value they want to invest and change the value of amount accordingly
 		const shgId = 1;
 		const proposalName = "Farming";
-		const proposalDescription = "I'd";
+		const proposalDetailCID = "I'd";
 		const amountToAsk = 100;
 
 		try {
@@ -126,7 +130,7 @@ export default function Dashboard() {
 				"KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
 			);
 			const op = await contractInstance.methods
-				.proposal(amountToAsk, proposalDescription, proposalName, shgId)
+				.proposal(amountToAsk, proposalDetailCID, proposalName, shgId)
 				.send();
 			await op.confirmation(1);
 			console.log("Proposal Created");
@@ -136,127 +140,149 @@ export default function Dashboard() {
 	};
 
 	return connected ? (
-		<div className="flex flex-col justify-center items-center gap-[20px] w-full h-full flex-1 px-10 lg:px-20 z-[inherit]">
-			<h2 className="font-mammoth text-primaryBlack font-medium text-3xl text-center">
-				GM (
-				<span
-					onClick={CopyAddress}
-					className="text-primaryBlack/90 cursor-pointer"
-				>
-					{address && address.length
-						? address.slice(0, 2) + "..." + address.slice(-2)
-						: "---"}
-				</span>
-				) <span className="font-primary"> &#128075;</span>
-			</h2>
-			<div className="flex flex-col px-10 lg:px-30 w-full z-[inherit] flex-1">
-				<div
-					data-aos="fade-up"
-					data-aos-anchor-placement="top-center"
-					data-aos-duration={1000}
-					data-aos-delay={200}
-					data-aos-once={true}
-					className="flex flex-col items-center flex-1 px-15 md:px-30 lg:px-50 py-20 gap-[30px] bg-primaryBlack rounded-30 w-full h-[600px] min-h-[600px] max-h-[600px] z-[inherit]"
-				>
-					<div className="flex flex-col items-center p-0 gap-[5px]">
-						<h3 className="font-bold text-2xl text-white">{shgName}</h3>
-						<p className="font-medium text-xs text-center text-white/50 w-3/4">
-							{shgDesc}
-						</p>
-					</div>
-
-					<hr className="w-4/5" />
-
-					<div className="w-full h-full max-h-[430px] flex-1 flex flex-col lg:flex-row justify-center p-0 gap-[50px]">
-						<div className="flex flex-col items-center p-0 gap-[20px] w-1/4 flex-1">
-							<h4 className="font-medium text-xl text-white/80">Options:</h4>
-
-							<div className="flex flex-col items-center p-0 gap-[10px] h-1/2">
-								<button
-									onClick={OpenDepositFunds}
-									className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-white/70 hover:text-white w-full"
-								>
-									Deposit funds
-								</button>
-								<button
-									onClick={OpenRequestFunds}
-									className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-white/70 hover:text-white w-full"
-								>
-									Request for loan
-								</button>
-							</div>
-
-							<div>
-								<p className="text-medium text-sm text-center text-white/30">
-									Number of Members:
-								</p>
-								<p className="text-medium text-sm text-center text-white/70">
-									{numberOfMembers} People
-								</p>
-							</div>
-
-							<div>
-								<p className="text-medium text-sm text-center text-white/30">
-									SHG established on:
-								</p>
-								<p className="text-medium text-sm text-center text-white/70">
-									{FormatFullDateString(shgEst)}
-								</p>
-							</div>
+		isAMember ? (
+			<div className="flex flex-col justify-center items-center gap-[20px] w-full h-full flex-1 px-10 lg:px-20 z-[inherit]">
+				<h2 className="font-mammoth text-primaryBlack font-medium text-3xl text-center">
+					GM (
+					<span
+						onClick={CopyAddress}
+						className="text-primaryBlack/90 cursor-pointer"
+					>
+						{address && address.length
+							? address.slice(0, 2) + "..." + address.slice(-2)
+							: "---"}
+					</span>
+					) <span className="font-primary"> &#128075;</span>
+				</h2>
+				<div className="flex flex-col px-10 lg:px-30 w-full z-[inherit] flex-1">
+					<div
+						data-aos="fade-up"
+						data-aos-anchor-placement="top-center"
+						data-aos-duration={1000}
+						data-aos-delay={200}
+						data-aos-once={true}
+						className="flex flex-col items-center flex-1 px-15 md:px-30 lg:px-50 py-20 gap-[30px] bg-primaryBlack rounded-30 w-full h-[600px] min-h-[600px] max-h-[600px] z-[inherit]"
+					>
+						<div className="flex flex-col items-center p-0 gap-[5px]">
+							<h3 className="font-bold text-2xl text-white">{shgName}</h3>
+							<p className="font-medium text-xs text-center text-white/50 w-3/4">
+								{shgDesc}
+							</p>
 						</div>
 
-						<div className="flex flex-col items-center p-0 gap-[20px] w-1/2 flex-2">
-							<h4 className="font-medium text-xl text-white/80">
-								Recent Activity:
-							</h4>
+						<hr className="w-4/5" />
 
-							<div
-								className={`flex flex-col items-center p-0 gap-[10px] h-full max-h-[380px] overflow-x-hidden overflow-y-auto ${
-									loading
-										? "justify-center"
-										: (!activity || !activity.length) && "justify-center"
-								}`}
-							>
-								{loading ? (
-									<Loader varient="line" theme="dark" text={true} />
-								) : activity && activity.length ? (
-									activity.map((item) => {
-										return (
-											<>
-												<p className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full">
-													{item}
-												</p>
-												<p className="mt-7 text-center text-sm text-white/30 w-full">
-													No more activity found
-												</p>
-											</>
-										);
-									})
-								) : (
-									<p className="text-center text-sm text-white/30 w-full">
-										No activity found
+						<div className="w-full h-full max-h-[430px] flex-1 flex flex-col lg:flex-row justify-center p-0 gap-[50px]">
+							<div className="flex flex-col items-center p-0 gap-[20px] w-1/4 flex-1">
+								<h4 className="font-medium text-xl text-white/80">Options:</h4>
+
+								<div className="flex flex-col items-center p-0 gap-[10px] h-1/2">
+									<button
+										onClick={OpenDepositFunds}
+										className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-white/70 hover:text-white w-full"
+									>
+										Deposit funds
+									</button>
+									<button
+										onClick={OpenRequestFunds}
+										className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-white/70 hover:text-white w-full"
+									>
+										Request for loan
+									</button>
+								</div>
+
+								<div>
+									<p className="text-medium text-sm text-center text-white/30">
+										Number of Members:
 									</p>
-								)}
+									<p className="text-medium text-sm text-center text-white/70">
+										{numberOfMembers} People
+									</p>
+								</div>
+
+								<div>
+									<p className="text-medium text-sm text-center text-white/30">
+										SHG established on:
+									</p>
+									<p className="text-medium text-sm text-center text-white/70">
+										{FormatFullDateString(shgEst)}
+									</p>
+								</div>
 							</div>
-						</div>
 
-						<div className="flex flex-col items-center p-0 gap-[20px] w-1/4 flex-1">
-							<h4 className="font-medium text-xl text-white/80">Members:</h4>
+							<div className="flex flex-col items-center p-0 gap-[20px] w-1/2 flex-2">
+								<h4 className="font-medium text-xl text-white/80">
+									Recent Activity:
+								</h4>
 
-							<div className="flex flex-col items-stretch p-0 pr-2 gap-[10px] max-h-[380px] overflow-y-auto">
-								{members.map((item) => {
-									return (
-										<p className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full">
-											{item}
+								<div
+									className={`flex flex-col items-center p-0 gap-[10px] h-full max-h-[380px] overflow-x-hidden overflow-y-auto ${
+										activityLoading
+											? "justify-center"
+											: (!activity || !activity.length) && "justify-center"
+									}`}
+								>
+									{activityLoading ? (
+										<Loader varient="line" theme="dark" text={true} />
+									) : activity && activity.length ? (
+										activity.map((item) => {
+											return (
+												<>
+													<p className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full">
+														{item}
+													</p>
+													<p className="mt-7 text-center text-sm text-white/30 w-full">
+														No more activity found
+													</p>
+												</>
+											);
+										})
+									) : (
+										<p className="text-center text-sm text-white/30 w-full">
+											No activity found
 										</p>
-									);
-								})}
+									)}
+								</div>
+							</div>
+
+							<div className="flex flex-col items-center p-0 gap-[20px] w-1/4 flex-1">
+								<h4 className="font-medium text-xl text-white/80">Members:</h4>
+
+								<div className="flex flex-col items-stretch p-0 pr-2 gap-[10px] max-h-[380px] overflow-y-auto">
+									{members.map((item) => {
+										return (
+											<p className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full">
+												{item}
+											</p>
+										);
+									})}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		) : (
+			<div className="border-box w-screen min-h-[calc(100vh-250px)] max-h-[calc(100vh-250px)] gap-5 lg:gap-10 flex flex-col justify-center items-center">
+				<p className="font-mammoth text-primaryBlack/90 text-5xl font-bold text-center">
+					OOPS!
+				</p>
+				<p className="text-primaryBlack/70 text-2xl font-medium lg:w-1/2 text-center">
+					Looks like you are not a member of any SHG. Either create an SHG or
+					Join an existing SHG
+				</p>
+
+				<Button
+					varient="dark"
+					gradient={false}
+					weight={"bold"}
+					onClick={() => navigate("/explore")}
+				>
+					Find SHGs
+					<CgArrowLongRight className="ml-1 text-xl text-white/80" />
+				</Button>
+			</div>
+		)
 	) : (
 		<div className="border-box w-screen min-h-[calc(100vh-250px)] max-h-[calc(100vh-250px)] gap-5 lg:gap-10 flex flex-col justify-center items-center">
 			<p className="font-mammoth text-primaryBlack/90 text-5xl font-bold text-center">

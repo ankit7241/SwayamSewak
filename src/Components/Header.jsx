@@ -94,7 +94,7 @@ const Header = () => {
 				style={"md:w-auto w-full"}
 				onClick={address ? onDisconnectWallet : onConnectWallet}
 			>
-				{connected ? minifiedAddress : "Connect Wallet"}
+				{address ? minifiedAddress : "Connect Wallet"}
 			</Button>
 		</div>
 	);
