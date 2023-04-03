@@ -19,7 +19,7 @@ export default function RequestFundsModal({
 	const OpenRequestFunds = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT19Bwe6B2s5b79rH5VW8gghiEFL3vfqXRRP"
+				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
 			);
 			const op = await contractInstance.methods
 				.proposal(amountToAsk * 1000000, proposalDesc, proposalName, shgId)
@@ -97,7 +97,7 @@ export default function RequestFundsModal({
 							<input
 								className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/80 placeholder:text-white/50"
 								type="number"
-								placeholder="Enter amount to request (in TEZ)"
+								placeholder="Enter amount to request (in ꜩ)"
 								value={amountToAsk}
 								onChange={(e) => setAmountToAsk(e.target.value)}
 							/>

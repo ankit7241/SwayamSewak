@@ -6,7 +6,6 @@ class SelfHelp(sp.Contract):
 
             # memberOfShg = sp.map(l ={},tkey = sp.TAddress, tvalue = sp.TSet(t=sp.TNat)),
             memberOfShg = sp.map(l ={},tkey = sp.TAddress, tvalue = sp.TNat),
-   
   
             shgDetails = sp.map(l ={},tkey = sp.TNat, tvalue = sp.TRecord(admin = sp.TAddress,shgName = sp.TString,shgDescription = sp.TString,timeOfCreation = sp.TTimestamp,balance=sp.TMutez,funderDetails = sp.TMap(k=sp.TAddress, v=sp.TMutez),numberOfFunders=sp.TInt,funders= sp.TSet(t=sp.TAddress))),
             
@@ -147,6 +146,18 @@ class SelfHelp(sp.Contract):
             self.data.proposalDetails[tempId].votesAgainst += 1
 
 
+    @sp.entry_point
+    def claimFund(self,params):
+        sp.set_type(params, sp.TRecord(_shgId=sp.TNat,_proposalId=sp.TNat))
+        sp.verify(sp.sender == self.data.proposalDetails[params._proposalId].proposer,"Only the proposer can claim amount")
+        sp.verify(self.data.proposalDetails[params._proposalId].amount<=self.data.shgDetails[params._shgId].balance,"The asked funds are less than the current balance of the SHG. Come again later.")
+        sp.send(sp.sender, self.data.proposalDetails[params._proposalId].amount)
+        self.data.shgDetails[params._shgId].balance = self.data.shgDetails[params._shgId].balance - self.data.proposalDetails[params._proposalId].amount
+        self.data.proposalDetails[params._proposalId].amount = sp.utils.nat_to_mutez(0)
+        
+
+
+
 
 
         
@@ -202,8 +213,8 @@ def test():
     scenario += auction.votingInFavour(1).run(sender = charles,valid = False,now = sp.timestamp(26))
     scenario += auction.votingInFavour(1).run(sender = charles,valid = False,now = sp.timestamp(26))
     scenario += auction.votingAgainst(1).run(sender = charles,valid = False,now = sp.timestamp(26))
+    scenario += auction.claimFund(_shgId=3,_proposalId=1).run(sender = alice,valid = False,now = sp.timestamp(26))
     
-    scenario += auction.voteRemove(1).run(sender = charles,now = sp.timestamp(26),valid = False)
 
         
 

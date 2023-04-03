@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { tezos } from "../../Utils/tezos";
+import { toast } from "react-toastify";
 
+import { tezos } from "../../Utils/tezos";
 import { AuthContext } from "../../Utils/AuthProvider";
+
 import Button from "../Button";
 
 export default function AddShgModal({ setOpenAddSHG }) {
@@ -16,13 +18,38 @@ export default function AddShgModal({ setOpenAddSHG }) {
 	const addShg = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT19Bwe6B2s5b79rH5VW8gghiEFL3vfqXRRP"
+				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
 			);
 			const op = await contractInstance.methods
 				.add_shg(shgDescription, shgName)
 				.send();
 			await op.confirmation(1);
+
+			toast.success(`SHG created successfully!`, {
+				position: "top-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "dark",
+			});
+
+			setOpenAddSHG(false);
+			navigate("/dashboard");
 		} catch (err) {
+			toast.error(`An unknown error occured!`, {
+				position: "top-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "dark",
+			});
+
 			throw err;
 		}
 	};

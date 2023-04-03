@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 import { tezos } from "../../Utils/tezos";
 import { fetchStorage } from "../../Utils/tzkt";
+import { AuthContext } from "../../Utils/AuthProvider";
 
 import Button from "../Button";
 import Loader from "../Loader";
@@ -13,6 +14,10 @@ export default function ProposalModal({
 	setOpenRequestModal,
 	setOpenProposalModal,
 }) {
+	const { address } = useContext(AuthContext);
+
+	const navigate = useNavigate();
+
 	const [loading, setLoading] = useState(false);
 	const [proposalName, setProposalName] = useState("");
 	const [proposalDesc, setProposalDesc] = useState("");
@@ -53,7 +58,7 @@ export default function ProposalModal({
 	const sendYes = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT19Bwe6B2s5b79rH5VW8gghiEFL3vfqXRRP"
+				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
 			);
 
 			const op = await contractInstance.methods
@@ -81,7 +86,7 @@ export default function ProposalModal({
 	const sendNo = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT19Bwe6B2s5b79rH5VW8gghiEFL3vfqXRRP"
+				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
 			);
 
 			const op = await contractInstance.methods

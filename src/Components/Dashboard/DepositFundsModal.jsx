@@ -17,7 +17,7 @@ export default function DepositFundsModal({
 	const OpenDepositFunds = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT19Bwe6B2s5b79rH5VW8gghiEFL3vfqXRRP"
+				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
 			);
 			const op = await contractInstance.methods.add_funds(shgId).send({
 				amount: `${amountToSend * 1000000}`,
@@ -38,8 +38,6 @@ export default function DepositFundsModal({
 
 			setOpenDepositModal(false);
 			setOpenRequestModal(false);
-
-			console.log("Fund Deposited");
 		} catch (err) {
 			toast.error(`An unknown error occured!`, {
 				position: "top-center",
@@ -79,7 +77,7 @@ export default function DepositFundsModal({
 							<input
 								className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/80 placeholder:text-white/50"
 								type="number"
-								placeholder="Enter amount to deposit (in TEZ)"
+								placeholder="Enter amount to deposit (in ꜩ)"
 								value={amountToSend}
 								onChange={(e) => setAmountToSend(e.target.value)}
 							/>
