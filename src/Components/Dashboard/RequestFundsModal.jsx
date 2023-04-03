@@ -91,7 +91,7 @@ export default function RequestFundsModal({ shgId, setOpenDepositModal, setOpenR
                                 <input
                                     className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/80 placeholder:text-white/50"
                                     type="number"
-                                    placeholder="Enter amount to request (in TEZ)"
+                                    placeholder="Enter amount to request (in ꜩ)"
                                     value={amountToAsk}
                                     onChange={(e) => setAmountToAsk(e.target.value)}
                                 />

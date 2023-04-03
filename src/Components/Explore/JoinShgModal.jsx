@@ -79,8 +79,21 @@ export default function JoinShgModal({ shgId, setOpenJoinSHG, shgDetails }) {
                 progress: undefined,
                 theme: "dark",
             });
-            console.log("Fund Deposited");
+
+            navigate("/explore");
+            setOpenJoinSHG(null);
+
         } catch (err) {
+            toast.error(`An unknown error occured!`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
             throw err;
         }
     };
@@ -149,7 +162,7 @@ export default function JoinShgModal({ shgId, setOpenJoinSHG, shgDetails }) {
                                     <input
                                         className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/80 placeholder:text-white/50"
                                         type="number"
-                                        placeholder="Enter amount to deposit (in TEZ)"
+                                        placeholder="Enter amount to deposit (in ꜩ)"
                                         value={amountToDeposit}
                                         onChange={(e) => setAmountToDeposit(e.target.value)}
                                     />

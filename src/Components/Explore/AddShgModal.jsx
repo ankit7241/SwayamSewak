@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { tezos } from "../../Utils/tezos";
+import { toast } from "react-toastify";
 
+import { tezos } from "../../Utils/tezos";
 import { AuthContext } from "../../Utils/AuthProvider";
+
 import Button from "../Button";
 
 export default function AddShgModal({ setOpenAddSHG }) {
@@ -21,7 +23,33 @@ export default function AddShgModal({ setOpenAddSHG }) {
                 .add_shg(shgDescription, shgName)
                 .send();
             await op.confirmation(1);
+
+            toast.success(`SHG created successfully!`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+
+            setOpenAddSHG(false);
+            navigate("/dashboard");
+
         } catch (err) {
+            toast.error(`An unknown error occured!`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+
             throw err;
         }
     };

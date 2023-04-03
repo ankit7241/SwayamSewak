@@ -37,7 +37,6 @@ export default function DepositFundsModal({ shgId, setOpenDepositModal, setOpenR
             setOpenDepositModal(false)
             setOpenRequestModal(false)
 
-            console.log("Fund Deposited");
         } catch (err) {
             toast.error(`An unknown error occured!`, {
                 position: "top-center",
@@ -76,7 +75,7 @@ export default function DepositFundsModal({ shgId, setOpenDepositModal, setOpenR
                                 <input
                                     className="flex flex-row items-start px-20 py-10 bg-white/5 border-primaryWidth border-white/10 rounded-20 outline-none w-full font-medium text-sm text-white/80 placeholder:text-white/50"
                                     type="number"
-                                    placeholder="Enter amount to deposit (in TEZ)"
+                                    placeholder="Enter amount to deposit (in ꜩ)"
                                     value={amountToSend}
                                     onChange={(e) => setAmountToSend(e.target.value)}
                                 />

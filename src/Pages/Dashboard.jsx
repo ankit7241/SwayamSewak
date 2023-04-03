@@ -21,6 +21,7 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [isAMember, setIsAMember] = useState(false);
     const [activityLoading, setActivityLoading] = useState(false);
+    const [collectingLoading, setCollectingLoading] = useState(false);
     const [openDepositModal, setOpenDepositModal] = useState(false);
     const [openRequestModal, setOpenRequestModal] = useState(false);
     const [openProposalModal, setOpenProposalModal] = useState(null);
@@ -132,6 +133,46 @@ export default function Dashboard() {
         );
     };
 
+    // Implement the logic for collecting loan amount
+    const CollectLoanAmount = async () => {
+        setCollectingLoading(true)
+        try {
+            // const contractInstance = await tezos.wallet.at(
+            //     "KT1LcSjT7KYfc3bkAv6o6cu2rPwgbwi5r49d"
+            // );
+
+            // const op = await contractInstance.methods.votingInFavour(openProposalModal).send();
+            // await op.confirmation(1);
+
+            toast.success(`Loan amount collected successfully!`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+
+            setCollectingLoading(false)
+
+        } catch (err) {
+            toast.error(`An unknown error occured!`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            setCollectingLoading(false)
+            throw err;
+        }
+    }
+
     const CopyAddress = () => {
         navigator.clipboard.writeText(address);
         toast.success(`Address copied to clipboard!`, {
@@ -214,6 +255,16 @@ export default function Dashboard() {
                                             >
                                                 Request for loan
                                             </button>
+                                            <button
+                                                onClick={CollectLoanAmount}
+                                                className="cursor-pointer flex items-center justify-center py-10 px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 hover:scale-105 transition font-primary font-medium text-[15px] leading-5 text-white/70 hover:text-white w-full"
+                                            >
+                                                {
+                                                    collectingLoading
+                                                        ? "Loading ..."
+                                                        : "Collect loan amount"
+                                                }
+                                            </button>
                                         </div>
 
                                         <div>
@@ -231,15 +282,6 @@ export default function Dashboard() {
                                             </p>
                                             <p className="text-medium text-sm text-center text-white/70">
                                                 {shgBalance / 1000000} ꜩ
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <p className="text-medium text-sm text-center text-white/30">
-                                                Number of Members:
-                                            </p>
-                                            <p className="text-medium text-sm text-center text-white/70">
-                                                {numberOfMembers} People
                                             </p>
                                         </div>
 
@@ -275,7 +317,7 @@ export default function Dashboard() {
                                                                 title="Click to view proposal"
                                                                 className="cursor-pointer text-center py-[7px] px-20 border-primaryWidth rounded-[15px] bg-white/5 border-white/10 hover:bg-white/10 transition text-[15px] leading-5 text-white/50 hover:text-white/80 w-full"
                                                             >
-                                                                <span className="text-white mr-2">{item.minifiedAddress}</span>
+                                                                <span className="text-white mr-2">{item.proposerAddress === address && "You ("} {item.minifiedAddress} {item.proposerAddress === address && ")"}</span>
                                                                 <span>created a proposal for</span>
                                                                 <span className="text-white mx-2">{item.amount / 1000000}</span>
                                                                 <span>ꜩ on</span>
