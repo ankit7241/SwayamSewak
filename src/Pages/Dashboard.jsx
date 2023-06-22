@@ -10,6 +10,7 @@ import DepositFundsModal from "../Components/Dashboard/DepositFundsModal";
 import ProposalModal from "../Components/Dashboard/ProposalModal";
 
 import { AuthContext } from "../Utils/AuthProvider";
+import { getAccount } from "../Utils/wallet";
 import { fetchStorage } from "../Utils/tzkt";
 import { CgArrowLongRight } from "react-icons/cg";
 
@@ -145,8 +146,12 @@ export default function Dashboard() {
 		// shgId --> shg ki id
 
 		try {
+			const activeAccount = await getAccount();
+
 			const storage = await fetchStorage();
-			const proposalId = storage.proposalIdInShg[`${shgId}`];
+
+			const proposalId = storage.proposalIdOfSender[`${activeAccount}`];
+			// const proposalId = storage.proposalIdInShg[`${shgId}`];
 			const votesInFavour =
 				storage.proposalDetails[`${proposalId}`].votesInFavour;
 			const votesAgainst =
@@ -154,7 +159,7 @@ export default function Dashboard() {
 
 			if (votesInFavour > votesAgainst) {
 				const contractInstance = await tezos.wallet.at(
-					"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
+					"KT1LA3jcURSkX2VCHwaW89vSo7pNpnjKUrpi"
 				);
 
 				const op = await contractInstance.methods

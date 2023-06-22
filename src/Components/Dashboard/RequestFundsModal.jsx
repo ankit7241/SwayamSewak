@@ -19,7 +19,7 @@ export default function RequestFundsModal({
 	const OpenRequestFunds = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
+				"KT1LA3jcURSkX2VCHwaW89vSo7pNpnjKUrpi"
 			);
 			const op = await contractInstance.methods
 				.proposal(amountToAsk * 1000000, proposalDesc, proposalName, shgId)
@@ -110,7 +110,7 @@ export default function RequestFundsModal({
 									style="w-full"
 									onClick={OpenRequestFunds}
 								>
-									Create your prposal
+									Create your proposal
 								</Button>
 							</div>
 						</div>

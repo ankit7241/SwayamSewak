@@ -58,7 +58,7 @@ export default function ProposalModal({
 	const sendYes = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
+				"KT1LA3jcURSkX2VCHwaW89vSo7pNpnjKUrpi"
 			);
 
 			const op = await contractInstance.methods
@@ -86,7 +86,7 @@ export default function ProposalModal({
 	const sendNo = async () => {
 		try {
 			const contractInstance = await tezos.wallet.at(
-				"KT1PBdtCB3zJewqstimFAziSd1fj6Tn6p6rL"
+				"KT1LA3jcURSkX2VCHwaW89vSo7pNpnjKUrpi"
 			);
 
 			const op = await contractInstance.methods
